@@ -17,7 +17,7 @@ export const getLetter: RequestHandler = async(req, res, next) => {
     const letterId = req.params.letterId;
     try {
         if (!mongoose.isValidObjectId(letterId)) {
-            throw createHttpError(400, "Invalid letter id")
+            throw createHttpError(400, "Invalid letter id");
         }
         
         const letter = await LetterModel.findById(letterId).exec();
@@ -55,4 +55,63 @@ export const createLetter: RequestHandler<unknown, unknown, CreateLetterBody, un
     } catch(error) {
         next(error);
     }
+}
+
+interface UpdateLetterParams {
+    letterId: string,
+}
+
+interface UpdateLetterBody {
+    title?: string, 
+    text?: string, 
+}
+
+export const updateLetter: RequestHandler<UpdateLetterParams, unknown, UpdateLetterBody, unknown> = async(req, res, next) => {
+    const letterId = req.params.letterId;
+    const newTitle = req.body.title;
+    const newText = req.body.text;
+
+    try {
+        if (!mongoose.isValidObjectId(letterId)) {
+            throw createHttpError(400, "Invalid letter id");
+        }
+
+        const letter = await LetterModel.findById(letterId).exec();
+
+        if (!letter) {
+            throw createHttpError(404, "Letter not found");
+        }
+
+        letter.title = newTitle ? newTitle : letter.title;
+        letter.text = newText ? newText : letter.text;
+
+        const updatedLetter = await letter.save();
+
+        res.status(200).json(updatedLetter);
+    } catch(error) {
+        next(error);
+    }
+}
+
+export const deleteLetter: RequestHandler = async (req, res, next) => {
+    const letterId = req.params.letterId;
+    try {
+
+        if (!mongoose.isValidObjectId(letterId)) {
+            throw createHttpError(400, "Invalid letter id");
+        }
+
+        const letter = await LetterModel.findById(letterId).exec();
+
+        if (!letter) {
+            throw createHttpError(404, "Letter not found");
+        }
+        
+        await letter.deleteOne();
+
+        res.sendStatus(204);
+    } catch (error) {
+        next(error);
+    }  
+
 }
