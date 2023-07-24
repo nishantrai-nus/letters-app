@@ -5,12 +5,15 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import styles from "./styles/LettersPage.module.css"
 import styleUtils from "./styles/utils.module.css"
 import * as LettersApi from "./network/letters_api"
-import SendLetterDialog from './components/SendLetterDialog';
+import SendLetterDialog from './components/SendEditLetterDialog';
+import {FaPlus} from "react-icons/fa"
+import SendEditLetterDialog from './components/SendEditLetterDialog';
 
 function App() {
   const [letters, setLetters] = useState<LetterModel[]>([]);
 
   const [showSendLetterDialog, setShowSendLetterDialog] = useState(false);
+  const [letterToEdit, setLetterToEdit] = useState<LetterModel|null>(null);
 
   useEffect(() => {
     async function loadLetters() {
@@ -38,8 +41,9 @@ function App() {
   return (
     <Container>
       <Button 
-        className={`mb-4 ${styleUtils.blockCenter}`}
+        className={`mb-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
         onClick={() => setShowSendLetterDialog(true)}>
+          <FaPlus />
         Send a new letter
       </Button>
       <Row xs={1} md={2} xl={3} className="g-4">
@@ -48,6 +52,7 @@ function App() {
             <Letter 
             letter={letter} 
             className={styles.letter}
+            onLetterClicked={setLetterToEdit}
             onDeleteLetterClicked={deleteLetter}
             key={letter._id}
             />
@@ -57,11 +62,21 @@ function App() {
       { showSendLetterDialog &&
         <SendLetterDialog 
         onDismiss={() => setShowSendLetterDialog(false)}
-        onLetterSent={(newLetter) => {
+        onLetterSaved={(newLetter) => {
           setLetters([...letters, newLetter])
           setShowSendLetterDialog(false);
         }}
         />
+      }
+      {letterToEdit &&
+      <SendEditLetterDialog 
+      letterToEdit={letterToEdit}
+      onDismiss={() => setLetterToEdit(null)}
+      onLetterSaved={(updatedLetter) => {
+        setLetters(letters.map(existingLetter => existingLetter._id === updatedLetter._id ? updatedLetter : existingLetter))
+        setLetterToEdit(null);
+      }}
+      />
       }
     </Container>
   );

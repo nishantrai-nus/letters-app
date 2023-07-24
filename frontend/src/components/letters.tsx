@@ -7,11 +7,12 @@ import { MdDelete } from "react-icons/md"
 
 interface LetterProps {
   letter: LetterModel,
+  onLetterClicked: (letter: LetterModel) => void,
   onDeleteLetterClicked: (letter: LetterModel) => void,
   className?: string,
 }
 
-const Letter = ({ letter, onDeleteLetterClicked, className }: LetterProps) => {
+const Letter = ({ letter, onLetterClicked, onDeleteLetterClicked, className }: LetterProps) => {
   const {
     title,
     text,
@@ -27,7 +28,9 @@ const Letter = ({ letter, onDeleteLetterClicked, className }: LetterProps) => {
   }
 
   return (
-    <Card className={`${styles.letterCard} ${className}`}>
+    <Card className={`${styles.letterCard} ${className}`}
+    onClick={() => onLetterClicked(letter)}
+    >
       <Card.Body className={styles.letterBody}>
         <Card.Title className={styleUtils.flexCenter}>
           {title}

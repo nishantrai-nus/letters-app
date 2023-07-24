@@ -1,21 +1,33 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { Letter } from "../models/letter";
 import { useForm } from "react-hook-form";
-import { createLetter, LetterInput } from "../network/letters_api";
+import { LetterInput } from "../network/letters_api";
+import * as LettersApi from "../network/letters_api";
 
-interface SendLetterDialogProps {
+interface SendEditLetterDialogProps {
+  letterToEdit?: Letter,
   onDismiss: () => void,
-  onLetterSent: (letter: Letter) => void,
+  onLetterSaved: (letter: Letter) => void,
 }
 
-const SendLetterDialog = ({onDismiss, onLetterSent}: SendLetterDialogProps) => {
+const SendEditLetterDialog = ({ letterToEdit, onDismiss, onLetterSaved}: SendEditLetterDialogProps) => {
 
-  const { register, handleSubmit, formState : { errors, isSubmitting } } = useForm<LetterInput>();
+  const { register, handleSubmit, formState : { errors, isSubmitting } } = useForm<LetterInput>({
+    defaultValues: {
+      title: letterToEdit?.title || "",
+      text: letterToEdit?.text || "",
+    }
+  });
 
   async function onSubmit(input: LetterInput) {
     try {
-      const letterResponse = await createLetter(input);
-      onLetterSent(letterResponse);
+      let letterResponse: Letter;
+      if (letterToEdit) {
+        letterResponse = await LettersApi.updateLetter(letterToEdit._id, input);
+      } else {
+        letterResponse = await LettersApi.createLetter(input);
+      }
+      onLetterSaved(letterResponse);
     } catch (error) {
       console.error(error);
       alert(error);
@@ -26,12 +38,12 @@ const SendLetterDialog = ({onDismiss, onLetterSent}: SendLetterDialogProps) => {
     <Modal show onHide={onDismiss}>
       <Modal.Header closeButton>
         <Modal.Title>
-          Send Letter
+          {letterToEdit ? "Edit letter" : "Send letter"}
         </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <Form id="sendLetterForm" onSubmit={handleSubmit(onSubmit)}>
+        <Form id="sendEditLetterForm" onSubmit={handleSubmit(onSubmit)}>
           <Form.Group className="mb-3">
             <Form.Label>Title</Form.Label>
             <Form.Control 
@@ -60,7 +72,7 @@ const SendLetterDialog = ({onDismiss, onLetterSent}: SendLetterDialogProps) => {
       <Modal.Footer>
         <Button
           type="submit"
-          form="sendLetterForm"
+          form="sendEditLetterForm"
           disabled={isSubmitting}
         >
           Send
@@ -70,4 +82,4 @@ const SendLetterDialog = ({onDismiss, onLetterSent}: SendLetterDialogProps) => {
    );
 }
  
-export default SendLetterDialog;
+export default SendEditLetterDialog;
