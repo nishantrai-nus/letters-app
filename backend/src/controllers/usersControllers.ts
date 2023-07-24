@@ -12,6 +12,7 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
         }
 
         const user = await UserModel.findById(authenticatedUserId).select("+email").exec()
+        res.status(200).json(user);
     } catch (error) {
         next(error)
     }
