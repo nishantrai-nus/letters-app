@@ -32,3 +32,7 @@ export async function createLetter(letter:LetterInput): Promise<Letter> {
   });
   return response.json();
 }
+
+export async function deleteLetter(letterId: string) {
+  await fetchData("/api/letters/" + letterId, { method: "DELETE"});
+}

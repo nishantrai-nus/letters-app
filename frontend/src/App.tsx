@@ -25,6 +25,16 @@ function App() {
     loadLetters();
   }, []);
 
+  async function deleteLetter(letter: LetterModel) {
+    try {
+      await LettersApi.deleteLetter(letter._id);
+      setLetters(letters.filter(existingLetter => existingLetter._id !== letter._id))
+    } catch (error) {
+      console.error(error);
+      alert(error);
+    }
+  }
+
   return (
     <Container>
       <Button 
@@ -35,7 +45,12 @@ function App() {
       <Row xs={1} md={2} xl={3} className="g-4">
         {letters.map(letter => (
           <Col key = {letter._id}>
-            <Letter letter={letter} className={styles.letter} key={letter._id}/>
+            <Letter 
+            letter={letter} 
+            className={styles.letter}
+            onDeleteLetterClicked={deleteLetter}
+            key={letter._id}
+            />
           </Col>
         ))}
       </Row>
