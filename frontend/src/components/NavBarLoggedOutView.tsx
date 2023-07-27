@@ -1,6 +1,4 @@
-import { Button, Navbar } from "react-bootstrap";
-import { User } from "../models/user";
-import * as LettersApi from "../network/letters_api";
+import { Button } from "react-bootstrap";
 
 interface NavBarLoggedOutViewProps {
     onLoginClicked: () => void,
