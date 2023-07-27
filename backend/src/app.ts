@@ -1,12 +1,13 @@
+import MongoStore from "connect-mongo/build/main/lib/MongoStore";
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
-import lettersRoutes from "./routes/lettersRoutes";
-import usersRoutes from "./routes/usersRoutes"
-import morgan from "morgan";
-import createHttpError, { isHttpError } from "http-errors";
 import session from "express-session";
+import createHttpError, { isHttpError } from "http-errors";
+import morgan from "morgan";
+import { requiresAuth } from "./middleware/auth";
+import lettersRoutes from "./routes/lettersRoutes";
+import usersRoutes from "./routes/usersRoutes";
 import env from "./util/validateEnv";
-import MongoStore from "connect-mongo/build/main/lib/MongoStore";
 
 const app = express();
 
@@ -28,7 +29,7 @@ app.use(session({
 }))
 
 app.use("/api/users", usersRoutes);
-app.use("/api/letters", lettersRoutes);
+app.use("/api/letters", requiresAuth, lettersRoutes);
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"));

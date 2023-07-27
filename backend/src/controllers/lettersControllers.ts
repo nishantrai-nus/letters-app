@@ -2,10 +2,14 @@ import { RequestHandler } from "express";
 import LetterModel from "../models/letter";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
+import { assertIsDefined } from "../util/assertIsDefined";
 
 export const getLetters: RequestHandler = async(req, res, next) => {
+    const authenticatedUserId = req.session.userId;
+
     try {
-        const letters = await LetterModel.find().exec();
+        assertIsDefined(authenticatedUserId);
+        const letters = await LetterModel.find({userId: authenticatedUserId}).exec();
         res.status(200).json(letters);
     }
     catch (error) {
@@ -15,7 +19,9 @@ export const getLetters: RequestHandler = async(req, res, next) => {
 
 export const getLetter: RequestHandler = async(req, res, next) => {
     const letterId = req.params.letterId;
+    const authenticatedUserId = req.session.userId;
     try {
+        assertIsDefined(authenticatedUserId);
         if (!mongoose.isValidObjectId(letterId)) {
             throw createHttpError(400, "Invalid letter id");
         }
@@ -24,6 +30,10 @@ export const getLetter: RequestHandler = async(req, res, next) => {
 
         if (!letter) {
             throw createHttpError(404, "Letter not found");
+        }
+
+        if (!letter.userId.equals(authenticatedUserId)) {
+            throw createHttpError(401, "You cannot access this letter");
         }
 
         res.status(200).json(letter)
@@ -40,13 +50,16 @@ interface CreateLetterBody {
 export const createLetter: RequestHandler<unknown, unknown, CreateLetterBody, unknown> = async(req, res, next) => {
     const title = req.body.title;
     const text = req.body.text;
+    const authenticatedUserId = req.session.userId;
     
     try {
+        assertIsDefined(authenticatedUserId);
         if (!title) {
             throw createHttpError(400, "Letter must have a title");
         }
         
         const newLetter = await LetterModel.create({
+            userId: authenticatedUserId,
             title: title,
             text: text,
         });
@@ -70,8 +83,10 @@ export const updateLetter: RequestHandler<UpdateLetterParams, unknown, UpdateLet
     const letterId = req.params.letterId;
     const newTitle = req.body.title;
     const newText = req.body.text;
+    const authenticatedUserId = req.session.userId;
 
     try {
+        assertIsDefined(authenticatedUserId);
         if (!mongoose.isValidObjectId(letterId)) {
             throw createHttpError(400, "Invalid letter id");
         }
@@ -80,6 +95,11 @@ export const updateLetter: RequestHandler<UpdateLetterParams, unknown, UpdateLet
 
         if (!letter) {
             throw createHttpError(404, "Letter not found");
+        }
+
+
+        if (!letter.userId.equals(authenticatedUserId)) {
+            throw createHttpError(401, "You cannot access this letter");
         }
 
         letter.title = newTitle ? newTitle : letter.title;
@@ -95,8 +115,9 @@ export const updateLetter: RequestHandler<UpdateLetterParams, unknown, UpdateLet
 
 export const deleteLetter: RequestHandler = async (req, res, next) => {
     const letterId = req.params.letterId;
+    const authenticatedUserId = req.session.userId;
     try {
-
+        assertIsDefined(authenticatedUserId);
         if (!mongoose.isValidObjectId(letterId)) {
             throw createHttpError(400, "Invalid letter id");
         }
@@ -105,6 +126,10 @@ export const deleteLetter: RequestHandler = async (req, res, next) => {
 
         if (!letter) {
             throw createHttpError(404, "Letter not found");
+        }
+
+        if (!letter.userId.equals(authenticatedUserId)) {
+            throw createHttpError(401, "You cannot access this letter");
         }
         
         await letter.deleteOne();
