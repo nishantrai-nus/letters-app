@@ -3,11 +3,13 @@ import * as LettersController from "../controllers/lettersControllers"
 
 const router = express.Router();
 
-router.get("/", LettersController.getLetters);
+router.get("/", LettersController.getReceivedLetters);
+
+router.get("/sentLetters", LettersController.getSentLetters);
 
 router.get("/:letterId", LettersController.getLetter);
 
-router.post("/", LettersController.createLetter);
+router.post("/sentLetters", LettersController.sendLetter);
 
 router.patch("/:letterId", LettersController.updateLetter);
 

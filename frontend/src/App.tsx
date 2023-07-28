@@ -6,10 +6,10 @@ import NavBar from './components/NavBar';
 import SignUpModal from './components/SignUpModal';
 import { User } from './models/user';
 import * as LettersApi from "./network/letters_api";
-import LettersPage from './pages/LettersPage';
-import PrivacyPage from './pages/PrivacyPage';
+import SentLettersPage from './pages/SentLettersPage';
 import NotFoundPage from './pages/NotFoundPage';
 import styles from "./styles/App.module.css"
+import ReceivedLettersPage from './pages/ReceivedLettersPage';
 
 function App() {
 
@@ -45,11 +45,11 @@ function App() {
 					<Routes>
 						<Route
 							path='/'
-							element={<LettersPage loggedInUser={loggedInUser} />}
+							element={<ReceivedLettersPage loggedInUser={loggedInUser} />}
 						/>
 						<Route
-							path='/privacy'
-							element={<PrivacyPage />}
+							path='/sentLetters'
+							element={<SentLettersPage loggedInUser={loggedInUser} />}
 						/>
 						<Route
 							path='/*'

@@ -8,7 +8,7 @@ import Letter from './letters';
 import styles from "../styles/LettersPage.module.css";
 import styleUtils from "../styles/utils.module.css";
 
-const LettersPageLoggedInView = () => {
+const SentLettersPageLoggedInView = () => {
 
 	const [letters, setLetters] = useState<LetterModel[]>([]);
 	const [lettersLoading, setLettersLoading] = useState(true);
@@ -16,8 +16,8 @@ const LettersPageLoggedInView = () => {
 
 	const [showSendLetterDialog, setShowSendLetterDialog] = useState(false);
 	const [letterToEdit, setLetterToEdit] = useState<LetterModel | null>(null);
-    
-    useEffect(() => {
+
+	useEffect(() => {
 		async function loadLetters() {
 			try {
 				setShowLettersLoadingError(false);
@@ -60,45 +60,45 @@ const LettersPageLoggedInView = () => {
 		</Row>
 
 
-    return ( 
-        <>
-            <Button
-					className={`mb-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
-					onClick={() => setShowSendLetterDialog(true)}>
-					<FaPlus />
-					Send a new letter
-				</Button>
-				{lettersLoading && <Spinner animation='border' variant='primary' />}
-				{showLettersLoadingError && <p>Something went wrong. Please refresh the page.</p>}
-				{!lettersLoading && !showLettersLoadingError &&
-					<>
-						{letters.length > 0
-							? lettersGrid
-							: <p>You don't have any letters yet!</p>
-						}
-					</>
-				}
-				{showSendLetterDialog &&
-					<SendEditLetterDialog
-						onDismiss={() => setShowSendLetterDialog(false)}
-						onLetterSaved={(newLetter) => {
-							setLetters([...letters, newLetter])
-							setShowSendLetterDialog(false);
-						}}
-					/>
-				}
-				{letterToEdit &&
-					<SendEditLetterDialog
-						letterToEdit={letterToEdit}
-						onDismiss={() => setLetterToEdit(null)}
-						onLetterSaved={(updatedLetter) => {
-							setLetters(letters.map(existingLetter => existingLetter._id === updatedLetter._id ? updatedLetter : existingLetter))
-							setLetterToEdit(null);
-						}}
-					/>
-				}
-            </>
-     );
+	return (
+		<>
+			<Button
+				className={`mb-4 ${styleUtils.blockCenter} ${styleUtils.flexCenter}`}
+				onClick={() => setShowSendLetterDialog(true)}>
+				<FaPlus />
+				Send a new letter
+			</Button>
+			{lettersLoading && <Spinner animation='border' variant='primary' />}
+			{showLettersLoadingError && <p>Something went wrong. Please refresh the page.</p>}
+			{!lettersLoading && !showLettersLoadingError &&
+				<>
+					{letters.length > 0
+						? lettersGrid
+						: <p>You don't have any letters yet!</p>
+					}
+				</>
+			}
+			{showSendLetterDialog &&
+				<SendEditLetterDialog
+					onDismiss={() => setShowSendLetterDialog(false)}
+					onLetterSaved={(newLetter) => {
+						setLetters([...letters, newLetter])
+						setShowSendLetterDialog(false);
+					}}
+				/>
+			}
+			{letterToEdit &&
+				<SendEditLetterDialog
+					letterToEdit={letterToEdit}
+					onDismiss={() => setLetterToEdit(null)}
+					onLetterSaved={(updatedLetter) => {
+						setLetters(letters.map(existingLetter => existingLetter._id === updatedLetter._id ? updatedLetter : existingLetter))
+						setLetterToEdit(null);
+					}}
+				/>
+			}
+		</>
+	);
 }
- 
-export default LettersPageLoggedInView;
+
+export default SentLettersPageLoggedInView;

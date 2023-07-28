@@ -17,6 +17,7 @@ const SendEditLetterDialog = ({ letterToEdit, onDismiss, onLetterSaved }: SendEd
         defaultValues: {
             title: letterToEdit?.title || "",
             text: letterToEdit?.text || "",
+            recipientUsername: letterToEdit?.recipientUsername || "",
         }
     });
 
@@ -45,25 +46,35 @@ const SendEditLetterDialog = ({ letterToEdit, onDismiss, onLetterSaved }: SendEd
 
             <Modal.Body>
                 <Form id="sendEditLetterForm" onSubmit={handleSubmit(onSubmit)}>
-                    <TextInputField 
-                    name="title"
-                    label="Title"
-                    type="text"
-                    placeholder="Title"
-                    register={register}
-                    registerOptions={{ required: "Required" }}
-                    error={errors.title}
+                    <TextInputField
+                        name="title"
+                        label="Title"
+                        type="text"
+                        placeholder="Title"
+                        register={register}
+                        registerOptions={{ required: "Required" }}
+                        error={errors.title}
                     />
 
-                    <TextInputField 
-                    name="text"
-                    label="Text"
-                    as="textarea"
-                    rows={5}
-                    placeholder="Text"
-                    register={register}
+                    <TextInputField
+                        name="text"
+                        label="Text"
+                        as="textarea"
+                        rows={5}
+                        placeholder="Text"
+                        register={register}
                     />
-                    
+
+                    <TextInputField
+                        name="recipientUsername"
+                        label="Recipient Username"
+                        type="text"
+                        placeholder="Recipient Username"
+                        register={register}
+                        registerOptions={{ required: "Required" }}
+                        error={errors.title}
+                    />
+
                 </Form>
             </Modal.Body>
 

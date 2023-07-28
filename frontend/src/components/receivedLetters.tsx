@@ -3,20 +3,17 @@ import styleUtils from "../styles/utils.module.css"
 import { Card } from "react-bootstrap";
 import { Letter as LetterModel } from "../models/letter";
 import { formatDate } from "../utils/formatDate";
-import { MdDelete } from "react-icons/md"
 
-interface LetterProps {
+interface ReceivedLetterProps {
     letter: LetterModel,
     onLetterClicked: (letter: LetterModel) => void,
-    onDeleteLetterClicked: (letter: LetterModel) => void,
     className?: string,
 }
 
-const Letter = ({ letter, onLetterClicked, onDeleteLetterClicked, className }: LetterProps) => {
+const ReceivedLetter = ({ letter, onLetterClicked, className }: ReceivedLetterProps) => {
     const {
         title,
         text,
-        recipientUsername,
         createdAt,
         updatedAt,
     } = letter;
@@ -28,8 +25,6 @@ const Letter = ({ letter, onLetterClicked, onDeleteLetterClicked, className }: L
         createdUpdatedText = "Created: " + formatDate(createdAt);
     }
 
-    const recipientUsernameString = "To: " + recipientUsername;
-
     return (
         <Card className={`${styles.letterCard} ${className}`}
             onClick={() => onLetterClicked(letter)}
@@ -37,23 +32,17 @@ const Letter = ({ letter, onLetterClicked, onDeleteLetterClicked, className }: L
             <Card.Body className={styles.letterBody}>
                 <Card.Title className={styleUtils.flexCenter}>
                     {title}
-                    <MdDelete
-                        className="text-muted ms-auto"
-                        onClick={(e) => {
-                            onDeleteLetterClicked(letter);
-                            e.stopPropagation();
-                        }}
-                    />
+                    <p>{ }</p>
                 </Card.Title>
                 <Card.Text className={styles.letterText}>
                     {text}
                 </Card.Text>
             </Card.Body>
             <Card.Footer className={`text-muted`}>
-                {recipientUsernameString} {createdUpdatedText}
+                {createdUpdatedText}
             </Card.Footer>
         </Card >
     )
 }
 
-export default Letter;
+export default ReceivedLetter;

@@ -19,7 +19,7 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
 }
 
 export async function getLoggedInUser(): Promise<User> {
-    const response = await fetchData("/api/users", {method: "GET"});
+    const response = await fetchData("/api/users", { method: "GET" });
     return response.json();
 }
 
@@ -30,14 +30,14 @@ export interface SignUpCredentials {
 }
 
 export async function signUp(credentials: SignUpCredentials) {
-    const response = await fetchData("/api/users/signup", 
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-    });
+    const response = await fetchData("/api/users/signup",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(credentials),
+        });
     return response.json();
 }
 
@@ -47,14 +47,14 @@ export interface LoginCredentials {
 }
 
 export async function login(credentials: LoginCredentials) {
-    const response = await fetchData("/api/users/login", 
-    {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-    });
+    const response = await fetchData("/api/users/login",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(credentials),
+        });
     return response.json();
 }
 
@@ -63,6 +63,11 @@ export async function logout() {
 }
 
 export async function fetchLetters(): Promise<Letter[]> {
+    const response = await fetchData("/api/letters/sentLetters", { method: "GET" });
+    return response.json();
+}
+
+export async function fetchReceivedLetters(): Promise<Letter[]> {
     const response = await fetchData("/api/letters", { method: "GET" });
     return response.json();
 }
@@ -70,6 +75,7 @@ export async function fetchLetters(): Promise<Letter[]> {
 export interface LetterInput {
     title: string,
     text?: string,
+    recipientUsername: string,
 }
 
 export async function createLetter(letter: LetterInput): Promise<Letter> {
