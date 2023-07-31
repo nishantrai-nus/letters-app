@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Button, Col, Row, Spinner } from "react-bootstrap";
-import { FaPlus } from "react-icons/fa";
+import { Col, Row, Spinner } from "react-bootstrap";
 import { Letter as LetterModel } from '../models/letter';
 import * as LettersApi from "../network/letters_api";
-import SendEditLetterDialog from "./SendEditLetterDialog";
 import styles from "../styles/LettersPage.module.css";
+import SendEditLetterDialog from "./SendEditLetterDialog";
 import ReceivedLetter from './receivedLetters';
 
 const SentLettersPageLoggedInView = () => {
@@ -39,8 +38,7 @@ const SentLettersPageLoggedInView = () => {
                 <Col key={letter._id}>
                     <ReceivedLetter
                         letter={letter}
-                        className={styles.letter}
-                        onLetterClicked={setLetterToEdit}
+                        className={styles.receivedLetter}
                         key={letter._id}
                     />
                 </Col>

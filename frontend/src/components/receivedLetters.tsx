@@ -6,12 +6,12 @@ import { formatDate } from "../utils/formatDate";
 
 interface ReceivedLetterProps {
     letter: LetterModel,
-    onLetterClicked: (letter: LetterModel) => void,
     className?: string,
 }
 
-const ReceivedLetter = ({ letter, onLetterClicked, className }: ReceivedLetterProps) => {
+const ReceivedLetter = ({ letter, className }: ReceivedLetterProps) => {
     const {
+        senderUsername,
         title,
         text,
         createdAt,
@@ -25,14 +25,14 @@ const ReceivedLetter = ({ letter, onLetterClicked, className }: ReceivedLetterPr
         createdUpdatedText = "Created: " + formatDate(createdAt);
     }
 
+    const senderUsernameString = "From: " + senderUsername;
+
     return (
-        <Card className={`${styles.letterCard} ${className}`}
-            onClick={() => onLetterClicked(letter)}
-        >
+        <Card className={`${styles.letterCard} ${className}`}>
             <Card.Body className={styles.letterBody}>
                 <Card.Title className={styleUtils.flexCenter}>
-                    {title}
-                    <p>{ }</p>
+                    <span className={styleUtils.leftJustify}>{title}</span>
+                    <span className={styleUtils.rightJustify}>{senderUsernameString}</span>
                 </Card.Title>
                 <Card.Text className={styles.letterText}>
                     {text}

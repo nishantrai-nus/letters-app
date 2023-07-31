@@ -14,3 +14,12 @@
 .width100 {
     width: 100%;
 }
+
+.leftJustify {
+    text-align: left;
+}
+  
+/* Style for the right-justified text */
+.rightJustify {
+    text-align: right;
+}
