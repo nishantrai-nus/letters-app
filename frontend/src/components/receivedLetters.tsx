@@ -3,21 +3,19 @@ import styleUtils from "../styles/utils.module.css"
 import { Card } from "react-bootstrap";
 import { Letter as LetterModel } from "../models/letter";
 import { formatDate } from "../utils/formatDate";
-import { send } from "process";
 
 interface ReceivedLetterProps {
     letter: LetterModel,
-    onLetterClicked: (letter: LetterModel) => void,
     className?: string,
 }
 
-const ReceivedLetter = ({ letter, onLetterClicked, className }: ReceivedLetterProps) => {
+const ReceivedLetter = ({ letter, className }: ReceivedLetterProps) => {
     const {
+        senderUsername,
         title,
         text,
         createdAt,
         updatedAt,
-        senderUsername
     } = letter;
 
     let createdUpdatedText: string;
@@ -30,12 +28,11 @@ const ReceivedLetter = ({ letter, onLetterClicked, className }: ReceivedLetterPr
     const senderUsernameString = "From: " + senderUsername;
 
     return (
-        <Card className={`${styles.letterCard} ${className}`}
-            onClick={() => onLetterClicked(letter)}
-        >
+        <Card className={`${styles.letterCard} ${className}`}>
             <Card.Body className={styles.letterBody}>
                 <Card.Title className={styleUtils.flexCenter}>
-                    {title}
+                    <span className={styleUtils.leftJustify}>{title}</span>
+                    <span className={styleUtils.rightJustify}>{senderUsernameString}</span>
                 </Card.Title>
                 <Card.Text className={styles.letterText}>
                     {text}

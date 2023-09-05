@@ -3,8 +3,9 @@ import { Col, Row, Spinner } from "react-bootstrap";
 import { Letter as LetterModel } from '../models/letter';
 import * as LettersApi from "../network/letters_api";
 import styles from "../styles/LettersPage.module.css";
-import ReceivedLetter from './ReceivedLetters';
+import ReceivedLetter from './receivedLetters';
 import ViewLetterDialog from './ViewLetterDialog';
+
 
 const ReceivedLettersPageLoggedInView = () => {
 
@@ -38,7 +39,6 @@ const ReceivedLettersPageLoggedInView = () => {
                     <ReceivedLetter
                         letter={letter}
                         className={styles.letter}
-                        onLetterClicked={setLetterToView}
                         key={letter._id}
                     />
                 </Col>
