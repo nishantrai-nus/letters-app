@@ -82,6 +82,12 @@ export const sendLetter: RequestHandler<unknown, unknown, CreateLetterBody, unkn
 
         const recipientUser = await UserModel.findOne({ username: recipientUsername }).exec();
         if (!recipientUser) {
+            console.log(recipientUsername);
+            throw createHttpError(404, "That username wasn't found");
+        }
+
+        const currUser = await UserModel.findById(authenticatedUserId).exec();
+        if (!currUser) {
             throw createHttpError(404, "That username wasn't found");
         }
 
@@ -90,6 +96,7 @@ export const sendLetter: RequestHandler<unknown, unknown, CreateLetterBody, unkn
             title: title,
             text: text,
             recipientUsername: recipientUsername,
+            senderUsername: currUser.username,
         });
 
         res.status(201).json(newLetter);

@@ -14,3 +14,9 @@
 .width100 {
     width: 100%;
 }
+
+.modalBody {
+    max-height: 70vh; /* Adjust as needed to fit your design */
+    overflow-y: scroll;
+    word-wrap: break-word;
+}

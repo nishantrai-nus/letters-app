@@ -50,7 +50,10 @@ const Letter = ({ letter, onLetterClicked, onDeleteLetterClicked, className }: L
                 </Card.Text>
             </Card.Body>
             <Card.Footer className={`text-muted`}>
-                {recipientUsernameString} {createdUpdatedText}
+                <div className="row">
+                    <div className="col-md-6">{recipientUsernameString}</div>
+                    <div className="col-md-6 text-right">{createdUpdatedText}</div>
+                </div>
             </Card.Footer>
         </Card >
     )

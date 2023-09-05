@@ -4,7 +4,7 @@ import { FaPlus } from "react-icons/fa";
 import { Letter as LetterModel } from '../models/letter';
 import * as LettersApi from "../network/letters_api";
 import SendEditLetterDialog from "./SendEditLetterDialog";
-import Letter from './letters';
+import Letter from './SentLetters';
 import styles from "../styles/LettersPage.module.css";
 import styleUtils from "../styles/utils.module.css";
 

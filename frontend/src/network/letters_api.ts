@@ -23,6 +23,11 @@ export async function getLoggedInUser(): Promise<User> {
     return response.json();
 }
 
+export async function getUsers(): Promise<User[]> {
+    const response = await fetchData("/api/users/getUsers", {method: "GET"});
+    return response.json();
+}
+
 export interface SignUpCredentials {
     username: string,
     email: string,
@@ -79,7 +84,7 @@ export interface LetterInput {
 }
 
 export async function createLetter(letter: LetterInput): Promise<Letter> {
-    const response = await fetchData("/api/letters",
+    const response = await fetchData("/api/letters/sentLetters",
         {
             method: "POST",
             headers: {

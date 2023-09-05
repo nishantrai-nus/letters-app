@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
-import { Button, Col, Row, Spinner } from "react-bootstrap";
-import { FaPlus } from "react-icons/fa";
+import { Col, Row, Spinner } from "react-bootstrap";
 import { Letter as LetterModel } from '../models/letter';
 import * as LettersApi from "../network/letters_api";
-import SendEditLetterDialog from "./SendEditLetterDialog";
 import styles from "../styles/LettersPage.module.css";
-import ReceivedLetter from './receivedLetters';
+import ReceivedLetter from './ReceivedLetters';
+import ViewLetterDialog from './ViewLetterDialog';
 
-const SentLettersPageLoggedInView = () => {
+const ReceivedLettersPageLoggedInView = () => {
 
     const [letters, setLetters] = useState<LetterModel[]>([]);
     const [lettersLoading, setLettersLoading] = useState(true);
     const [showLettersLoadingError, setShowLettersLoadingError] = useState(false);
 
-    const [showSendLetterDialog, setShowSendLetterDialog] = useState(false);
-    const [letterToEdit, setLetterToEdit] = useState<LetterModel | null>(null);
+    const [letterToView, setLetterToView] = useState<LetterModel | null>(null);
 
     useEffect(() => {
         async function loadLetters() {
@@ -40,7 +38,7 @@ const SentLettersPageLoggedInView = () => {
                     <ReceivedLetter
                         letter={letter}
                         className={styles.letter}
-                        onLetterClicked={setLetterToEdit}
+                        onLetterClicked={setLetterToView}
                         key={letter._id}
                     />
                 </Col>
@@ -60,27 +58,17 @@ const SentLettersPageLoggedInView = () => {
                     }
                 </>
             }
-            {showSendLetterDialog &&
-                <SendEditLetterDialog
-                    onDismiss={() => setShowSendLetterDialog(false)}
-                    onLetterSaved={(newLetter) => {
-                        setLetters([...letters, newLetter])
-                        setShowSendLetterDialog(false);
-                    }}
-                />
-            }
-            {letterToEdit &&
-                <SendEditLetterDialog
-                    letterToEdit={letterToEdit}
-                    onDismiss={() => setLetterToEdit(null)}
-                    onLetterSaved={(updatedLetter) => {
-                        setLetters(letters.map(existingLetter => existingLetter._id === updatedLetter._id ? updatedLetter : existingLetter))
-                        setLetterToEdit(null);
-                    }}
+            {(letterToView) && 
+                <ViewLetterDialog
+                    letterToView={letterToView}
+                    onDismiss={() => {
+                            setLetterToView(null)
+                        }
+                    }
                 />
             }
         </>
     );
 }
 
-export default SentLettersPageLoggedInView;
+export default ReceivedLettersPageLoggedInView;

@@ -3,6 +3,7 @@ import styleUtils from "../styles/utils.module.css"
 import { Card } from "react-bootstrap";
 import { Letter as LetterModel } from "../models/letter";
 import { formatDate } from "../utils/formatDate";
+import { send } from "process";
 
 interface ReceivedLetterProps {
     letter: LetterModel,
@@ -16,6 +17,7 @@ const ReceivedLetter = ({ letter, onLetterClicked, className }: ReceivedLetterPr
         text,
         createdAt,
         updatedAt,
+        senderUsername
     } = letter;
 
     let createdUpdatedText: string;
@@ -25,6 +27,8 @@ const ReceivedLetter = ({ letter, onLetterClicked, className }: ReceivedLetterPr
         createdUpdatedText = "Created: " + formatDate(createdAt);
     }
 
+    const senderUsernameString = "From: " + senderUsername;
+
     return (
         <Card className={`${styles.letterCard} ${className}`}
             onClick={() => onLetterClicked(letter)}
@@ -32,14 +36,16 @@ const ReceivedLetter = ({ letter, onLetterClicked, className }: ReceivedLetterPr
             <Card.Body className={styles.letterBody}>
                 <Card.Title className={styleUtils.flexCenter}>
                     {title}
-                    <p>{ }</p>
                 </Card.Title>
                 <Card.Text className={styles.letterText}>
                     {text}
                 </Card.Text>
             </Card.Body>
             <Card.Footer className={`text-muted`}>
-                {createdUpdatedText}
+                <div className="row">
+                    <div className="col-md-6">{senderUsernameString}</div>
+                    <div className="col-md-6 text-right">{createdUpdatedText}</div>
+                </div>
             </Card.Footer>
         </Card >
     )
