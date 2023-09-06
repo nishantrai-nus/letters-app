@@ -14,7 +14,9 @@ const app = express();
 
 app.use(cors(
     {
-        origin: ["https://penpal.onrender.com"]
+        origin: ["https://penpal.onrender.com"],
+        methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
+        credentials : true,
     }
 ))
 
