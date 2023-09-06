@@ -21,12 +21,12 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
 }
 
 export async function getLoggedInUser(): Promise<User> {
-    const response = await fetchData(API_URL + "/api/users", { method: "GET" });
+    const response = await fetchData(API_URL + "/api/users", { method: "GET", credentials: "include" });
     return response.json();
 }
 
 export async function getUsers(): Promise<User[]> {
-    const response = await fetchData(API_URL + "/api/users/getUsers", {method: "GET"});
+    const response = await fetchData(API_URL + "/api/users/getUsers", {method: "GET", credentials: "include" });
     return response.json();
 }
 
@@ -44,6 +44,7 @@ export async function signUp(credentials: SignUpCredentials) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(credentials),
+            credentials: "include",
         });
     return response.json();
 }
@@ -61,21 +62,22 @@ export async function login(credentials: LoginCredentials) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(credentials),
+            credentials: "include" 
         });
     return response.json();
 }
 
 export async function logout() {
-    await fetchData(API_URL + "/api/users/logout", { method: "POST" });
+    await fetchData(API_URL + "/api/users/logout", { method: "POST", credentials: "include"  });
 }
 
 export async function fetchLetters(): Promise<Letter[]> {
-    const response = await fetchData(API_URL + "/api/letters/sentLetters", { method: "GET" });
+    const response = await fetchData(API_URL + "/api/letters/sentLetters", { method: "GET", credentials: "include"  });
     return response.json();
 }
 
 export async function fetchReceivedLetters(): Promise<Letter[]> {
-    const response = await fetchData(API_URL + "/api/letters", { method: "GET" });
+    const response = await fetchData(API_URL + "/api/letters", { method: "GET", credentials: "include"  });
     return response.json();
 }
 
@@ -93,6 +95,7 @@ export async function createLetter(letter: LetterInput): Promise<Letter> {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(letter),
+            credentials: "include" 
         });
     return response.json();
 }
@@ -103,11 +106,12 @@ export async function updateLetter(letterId: string, letter: LetterInput): Promi
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(letter)
+        body: JSON.stringify(letter),
+        credentials: "include" 
     })
     return response.json();
 }
 
 export async function deleteLetter(letterId: string) {
-    await fetchData(API_URL + "/api/letters/" + letterId, { method: "DELETE" });
+    await fetchData(API_URL + "/api/letters/" + letterId, { method: "DELETE", credentials: "include"  });
 }
