@@ -8,8 +8,15 @@ import { requiresAuth } from "./middleware/auth";
 import lettersRoutes from "./routes/lettersRoutes";
 import usersRoutes from "./routes/usersRoutes";
 import env from "./util/validateEnv";
+import cors from 'cors';
 
 const app = express();
+
+app.use(cors(
+    {
+        origin: ["https://penpal.onrender.com"]
+    }
+))
 
 app.use(morgan("dev"));
 

@@ -2,6 +2,8 @@ import { ConflictError, UnauthorisedError } from "../errors/http_errors";
 import { Letter } from "../models/letter";
 import { User } from "../models/user"
 
+const API_URL="https://penpals.onrender.com";
+
 async function fetchData(input: RequestInfo, init?: RequestInit) {
     const response = await fetch(input, init);
     if (response.ok) {
@@ -19,12 +21,12 @@ async function fetchData(input: RequestInfo, init?: RequestInit) {
 }
 
 export async function getLoggedInUser(): Promise<User> {
-    const response = await fetchData("/api/users", { method: "GET" });
+    const response = await fetchData(API_URL + "/api/users", { method: "GET" });
     return response.json();
 }
 
 export async function getUsers(): Promise<User[]> {
-    const response = await fetchData("/api/users/getUsers", {method: "GET"});
+    const response = await fetchData(API_URL + "/api/users/getUsers", {method: "GET"});
     return response.json();
 }
 
@@ -35,7 +37,7 @@ export interface SignUpCredentials {
 }
 
 export async function signUp(credentials: SignUpCredentials) {
-    const response = await fetchData("/api/users/signup",
+    const response = await fetchData(API_URL + "/api/users/signup",
         {
             method: "POST",
             headers: {
@@ -52,7 +54,7 @@ export interface LoginCredentials {
 }
 
 export async function login(credentials: LoginCredentials) {
-    const response = await fetchData("/api/users/login",
+    const response = await fetchData(API_URL + "/api/users/login",
         {
             method: "POST",
             headers: {
@@ -64,16 +66,16 @@ export async function login(credentials: LoginCredentials) {
 }
 
 export async function logout() {
-    await fetchData("/api/users/logout", { method: "POST" });
+    await fetchData(API_URL + "/api/users/logout", { method: "POST" });
 }
 
 export async function fetchLetters(): Promise<Letter[]> {
-    const response = await fetchData("/api/letters/sentLetters", { method: "GET" });
+    const response = await fetchData(API_URL + "/api/letters/sentLetters", { method: "GET" });
     return response.json();
 }
 
 export async function fetchReceivedLetters(): Promise<Letter[]> {
-    const response = await fetchData("/api/letters", { method: "GET" });
+    const response = await fetchData(API_URL + "/api/letters", { method: "GET" });
     return response.json();
 }
 
@@ -84,7 +86,7 @@ export interface LetterInput {
 }
 
 export async function createLetter(letter: LetterInput): Promise<Letter> {
-    const response = await fetchData("/api/letters/sentLetters",
+    const response = await fetchData(API_URL + "/api/letters/sentLetters",
         {
             method: "POST",
             headers: {
@@ -96,7 +98,7 @@ export async function createLetter(letter: LetterInput): Promise<Letter> {
 }
 
 export async function updateLetter(letterId: string, letter: LetterInput): Promise<Letter> {
-    const response = await fetchData("/api/letters/" + letterId, {
+    const response = await fetchData(API_URL + "/api/letters/" + letterId, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -107,5 +109,5 @@ export async function updateLetter(letterId: string, letter: LetterInput): Promi
 }
 
 export async function deleteLetter(letterId: string) {
-    await fetchData("/api/letters/" + letterId, { method: "DELETE" });
+    await fetchData(API_URL + "/api/letters/" + letterId, { method: "DELETE" });
 }
