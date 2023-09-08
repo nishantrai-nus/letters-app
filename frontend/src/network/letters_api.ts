@@ -3,6 +3,8 @@ import { Letter } from "../models/letter";
 import { User } from "../models/user"
 
 const API_URL="https://penpals-backend.onrender.com";
+// const API_URL="http://localhost:5000";
+
 
 async function fetchData(input: RequestInfo, init?: RequestInit) {
     const response = await fetch(input, init);

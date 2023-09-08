@@ -28,7 +28,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 5 * 60 * 60 * 1000,
+        maxAge: 60 * 60 * 1000,
     },
     rolling: true,
     store: MongoStore.create({
@@ -46,7 +46,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use("/api/users", usersRoutes);
-app.use("/api/letters", lettersRoutes);
+app.use("/api/letters", requiresAuth, lettersRoutes);
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"));
