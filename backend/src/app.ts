@@ -46,7 +46,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use("/api/users", usersRoutes);
-app.use("/api/letters", requiresAuth, lettersRoutes);
+app.use("/api/letters", lettersRoutes);
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"));
