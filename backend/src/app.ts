@@ -23,18 +23,22 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
+app.set('trust proxy', 1);
 app.use(session({
     secret: env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 60 * 60 * 1000,
+        maxAge: 30000,
+        secure: true,
+        sameSite: 'none'
     },
     rolling: true,
     store: MongoStore.create({
         mongoUrl: env.MONGO_CONNECTION_STRING
     }),
-}))
+}));
+
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Credentials", 'true');
     res.header("Access-Control-Allow-Origin", req.headers.origin);
